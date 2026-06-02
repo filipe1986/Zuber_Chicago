@@ -1,0 +1,5 @@
+relationship 30d8a6a1-1d61-4b0f-bfab-81520cc2a07c
+	joinOnDateBehavior: datePartOnly
+	fromColumn: saturday_trips.start_ts
+	toColumn: LocalDateTable_dd0969a4-b3c7-4a0f-b362-812f5ea93810.Date
+

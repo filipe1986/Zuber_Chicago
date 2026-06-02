@@ -1,0 +1,46 @@
+table saturday_trips
+	lineageTag: 19d39a09-b651-437c-bd15-1fc8d42df315
+
+	column start_ts
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 89a7531a-767b-404a-8ac2-419b9ac86d17
+		summarizeBy: none
+		sourceColumn: start_ts
+
+		variation Variation
+			isDefault
+			relationship: 30d8a6a1-1d61-4b0f-bfab-81520cc2a07c
+			defaultHierarchy: LocalDateTable_dd0969a4-b3c7-4a0f-b362-812f5ea93810.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column weather_conditions
+		dataType: string
+		lineageTag: e8a043f7-a750-4655-a12d-3aec6ceceea0
+		summarizeBy: none
+		sourceColumn: weather_conditions
+
+		annotation SummarizationSetBy = Automatic
+
+	column duration_seconds
+		dataType: int64
+		formatString: 0
+		lineageTag: a80b6053-5c62-4121-a6c1-2914ae12a68d
+		summarizeBy: sum
+		sourceColumn: duration_seconds
+
+		annotation SummarizationSetBy = Automatic
+
+	partition saturday_trips = m
+		mode: import
+		source =
+				let
+				  Source = Csv.Document(File.Contents("C:\Users\Micro\Documents\Tripleten\Sprint_7\project\saturday_trips.csv"), [Delimiter = ",", Columns = 3, QuoteStyle = QuoteStyle.None]),
+				  #"Promoted headers" = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+				  #"Changed column type" = Table.TransformColumnTypes(#"Promoted headers", {{"start_ts", type datetime}, {"weather_conditions", type text}, {"duration_seconds", Int64.Type}})
+				in
+				  #"Changed column type"
+
+	annotation PBI_ResultType = Table
+
